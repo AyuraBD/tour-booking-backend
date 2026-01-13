@@ -1,0 +1,5 @@
+model Customer {
+  id     String @id
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
