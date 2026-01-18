@@ -1,5 +1,17 @@
 model Operator {
-  id     String @id
-  userId String
+  id     String @id @default(uuid())
+  userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName String
+  phone String
+  address String
+  district String
+  country String
+  image String?
+  companyName String
+  bio String
+
+  tours Tour[]
+  events Event[]
 }

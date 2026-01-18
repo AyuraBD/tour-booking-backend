@@ -1,5 +1,20 @@
 model Customer {
-  id     String @id
-  userId String
+  id     String @id @default(uuid())
+  userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName String
+  phone String
+  address String?
+  country String
+  image String?
+  gender Gender
+
+  booking Booking[]
+  review Review[]
+}
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }

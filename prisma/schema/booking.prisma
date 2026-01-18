@@ -1,0 +1,22 @@
+model Booking {
+  id     String @id @default(uuid())
+  eventId String
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tourId String
+  tour Tour @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  customerId String
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  totalPrice Int
+  totalSeat Int
+  createdAt DateTime
+  bookingStatus BookingStatus
+
+  payment Payment[]
+}
+
+enum BookingStatus{
+  DRAFT
+  ACTIVE
+  ONGOING
+  COMPLETED
+}

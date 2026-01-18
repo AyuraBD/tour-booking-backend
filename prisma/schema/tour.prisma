@@ -1,0 +1,40 @@
+model Tour {
+  id     String @id @default(uuid())
+  operatorId String
+  operator   Operator   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  title String
+  overview String
+  destination String
+  tourDuration String
+  minPrice Int
+  maxPrice Int
+  including String?
+  excluding String?
+  meetingPoint String?
+  endPoint String?
+  tourDistrict String?
+  createdAt DateTime?
+  updateAt DateTime?
+  status Status?
+  itinerary String?
+  additionalInfo String?
+  tourType TourType?
+
+  events Event[]
+  booking Booking[]
+  review Review[]
+}
+
+enum Status{
+  DRAFT
+  PUBLISHED
+  REJECTED
+}
+
+enum TourType{
+  HIKING
+  BEACH_TOUR
+  TREKKING
+  RIVER_CRUISE
+  HAOR_CRUISE
+}
