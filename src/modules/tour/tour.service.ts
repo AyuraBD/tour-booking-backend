@@ -27,9 +27,6 @@ const createTour = async(data:Omit<Tour, 'id'>, id: string)=>{
       id:true,
     }
   });
-  if(!operatorData){
-    throw new Error("Forbidden");
-  }
   return await prisma.tour.create({
     data:{
       ...data,
@@ -44,13 +41,9 @@ const updateTour = async(data:Partial<Tour>, id: string, paramId:string)=>{
       userId:id
     },
     select:{
-      id:true,
-      userId: true
+      id:true
     }
   });
-  if(!operatorData){
-    throw new Error("Forbidden");
-  }
   const tourData = await prisma.tour.findUniqueOrThrow({
     where:{
       id: paramId
@@ -61,7 +54,7 @@ const updateTour = async(data:Partial<Tour>, id: string, paramId:string)=>{
     }
   });
   if(operatorData.id !== tourData.operatorId){
-    throw new Error("The tour couldn't found that you want to update");
+    throw new Error("Tour not found");
   }
   return await prisma.tour.update({
     where:{
@@ -80,13 +73,9 @@ const deleteTour = async(id: string, paramId:string)=>{
       userId:id
     },
     select:{
-      id:true,
-      userId: true
+      id:true
     }
   });
-  if(!operatorData){
-    throw new Error("Forbidden");
-  }
   const tourData = await prisma.tour.findUniqueOrThrow({
     where:{
       id: paramId
@@ -97,7 +86,7 @@ const deleteTour = async(id: string, paramId:string)=>{
     }
   });
   if(operatorData.id !== tourData.operatorId){
-    throw new Error("The tour couldn't found that you want to delete");
+    throw new Error("Tour not found");
   }
   return await prisma.tour.delete({
     where:{
