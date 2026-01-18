@@ -1,0 +1,114 @@
+import { Operator, Tour } from "../../../generated/prisma/client"
+import { prisma } from "../../lib/prisma"
+
+const getTour = async(id:string)=>{
+  const operatorData = await prisma.operator.findUniqueOrThrow({
+    where:{
+      userId:id
+    },
+    select:{
+      id: true
+    }
+  })
+
+  return await prisma.tour.findMany({
+    where:{
+      operatorId:operatorData.id
+    }
+  })
+}
+
+const createTour = async(data:Omit<Tour, 'id'>, id: string)=>{
+  const operatorData = await prisma.operator.findUniqueOrThrow({
+    where:{
+      userId:id
+    },
+    select:{
+      id:true,
+    }
+  });
+  if(!operatorData){
+    throw new Error("Forbidden");
+  }
+  return await prisma.tour.create({
+    data:{
+      ...data,
+      operatorId: operatorData.id
+    }
+  });
+}
+
+const updateTour = async(data:Partial<Tour>, id: string, paramId:string)=>{
+  const operatorData = await prisma.operator.findUniqueOrThrow({
+    where:{
+      userId:id
+    },
+    select:{
+      id:true,
+      userId: true
+    }
+  });
+  if(!operatorData){
+    throw new Error("Forbidden");
+  }
+  const tourData = await prisma.tour.findUniqueOrThrow({
+    where:{
+      id: paramId
+    },
+    select:{
+      id:true,
+      operatorId: true
+    }
+  });
+  if(operatorData.id !== tourData.operatorId){
+    throw new Error("The tour couldn't found that you want to update");
+  }
+  return await prisma.tour.update({
+    where:{
+      id: tourData.id
+    },
+    data:{
+      ...data,
+      operatorId: operatorData.id
+    }
+  });
+}
+
+const deleteTour = async(id: string, paramId:string)=>{
+  const operatorData = await prisma.operator.findUniqueOrThrow({
+    where:{
+      userId:id
+    },
+    select:{
+      id:true,
+      userId: true
+    }
+  });
+  if(!operatorData){
+    throw new Error("Forbidden");
+  }
+  const tourData = await prisma.tour.findUniqueOrThrow({
+    where:{
+      id: paramId
+    },
+    select:{
+      id:true,
+      operatorId: true
+    }
+  });
+  if(operatorData.id !== tourData.operatorId){
+    throw new Error("The tour couldn't found that you want to delete");
+  }
+  return await prisma.tour.delete({
+    where:{
+      id: tourData.id
+    }
+  });
+}
+
+export const tourService = {
+  getTour,
+  createTour,
+  updateTour,
+  deleteTour
+}
