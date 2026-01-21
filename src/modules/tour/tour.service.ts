@@ -18,6 +18,10 @@ const getTour = async(id:string)=>{
   })
 }
 
+const getAllTours = async()=>{
+  return await prisma.tour.findMany({})
+}
+
 const createTour = async(data:Omit<Tour, 'id'>, id: string)=>{
   const operatorData = await prisma.operator.findUniqueOrThrow({
     where:{
@@ -97,6 +101,7 @@ const deleteTour = async(id: string, paramId:string)=>{
 
 export const tourService = {
   getTour,
+  getAllTours,
   createTour,
   updateTour,
   deleteTour

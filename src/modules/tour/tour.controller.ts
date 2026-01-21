@@ -20,6 +20,19 @@ const getTour = async(req: Request, res: Response, next: NextFunction)=>{
   }
 }
 
+const getAllTours = async(req: Request, res: Response, next: NextFunction)=>{
+  try{
+    
+    const result = await tourService.getAllTours();
+    res.status(200).json({
+      success: true,
+      data: result
+    })
+  }catch(err:any){
+    next(err);
+  }
+}
+
 const createTour = async(req: Request, res: Response, next: NextFunction)=>{
   try{
     const userId = req.user?.id;
@@ -93,6 +106,7 @@ const deleteTour = async(req: Request, res: Response, next: NextFunction)=>{
 
 export const tourController = {
   getTour,
+  getAllTours,
   createTour,
   updateTour,
   deleteTour

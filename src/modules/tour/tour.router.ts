@@ -4,7 +4,9 @@ import { tourController } from './tour.controller';
 
 const router = express.Router();
 
-router.get('/', authMiddleware(UserRole.OPERATOR), tourController.getTour);
+router.get('/', tourController.getTour);
+
+router.get('/all', tourController.getAllTours);
 
 router.post('/', authMiddleware(UserRole.OPERATOR), tourController.createTour);
 
